@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ProyectoFinal</string>
+    <string name="welcome_text">Bienvenido!</string>
+    <string name="askEmail_text">Introduce email y contraseña</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="login_button">Iniciar Sección</string>
+    <string name="signup_button">Registrase</string>
 </resources>
