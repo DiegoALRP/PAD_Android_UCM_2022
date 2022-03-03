@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">Calculator</string>
-    <string name="first_number">First Number</string>
-    <string name="second_number">Second Number</string>
-    <string name="add_button">ADD</string>
-    <string name="result_message">RESULT:</string>
-
-</resources>
