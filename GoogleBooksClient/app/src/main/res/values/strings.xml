@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">GoogleBooksClient</string>
+    <string name="radio1">all</string>
+    <string name="radio2">books</string>
+    <string name="radio3">magazines</string>
+    <string name="btn1">SEARCH BOOKS</string>
+    <string name="txtv1">Book search</string>
+    <string name="txtv2">Book authors</string>
+    <string name="txtv3">Book title</string>
+</resources>
