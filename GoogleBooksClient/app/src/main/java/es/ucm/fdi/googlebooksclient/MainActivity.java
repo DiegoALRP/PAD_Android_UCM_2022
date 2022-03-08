@@ -4,11 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText authorText;
     private EditText titleText;
     private RadioGroup radioGroup;
+
+    private BooksResultListAdapter booksResultListAdapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +44,28 @@ public class MainActivity extends AppCompatActivity {
         titleText = findViewById(R.id.booktitle_text);
         radioGroup = findViewById(R.id.radioGroup);
 
+        ArrayList<BookInfo> array = new ArrayList<BookInfo>();
+        try {
+            array.add(new BookInfo("Don Quijote", "Cervantes", new URL("https://www.googleapis.com/books/v1/volumes?")));
+            array.add(new BookInfo("Don Quijote", "Cervantes", new URL("https://www.googleapis.com/books/v1/volumes?")));
+            array.add(new BookInfo("Don Quijote", "Cervantes", new URL("https://www.googleapis.com/books/v1/volumes?")));
+            array.add(new BookInfo("Don Quijote", "Cervantes", new URL("https://www.googleapis.com/books/v1/volumes?")));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
+        booksResultListAdapter = new BooksResultListAdapter(this, array);
+
+        recyclerView = findViewById(R.id.recyclerView_bookList);
+        booksResultListAdapter = new BooksResultListAdapter(this, array);
+        recyclerView.setAdapter(booksResultListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    void updateBooksResultList(List<BookInfo> bookInfos) {
+
+        booksResultListAdapter.setBooksData(bookInfos);
+        booksResultListAdapter.notifyDataSetChanged();
     }
 
     public void searchBooks(View view) {

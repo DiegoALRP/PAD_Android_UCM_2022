@@ -34,14 +34,14 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
     private final int MAX_RESULT = 40;
     private final int MAX_LENGTH = 999999;
 
-    public BookLoader(@NonNull @org.jetbrains.annotations.NotNull Context context, String queryString, String printType) {
+    public BookLoader(@NonNull Context context, String queryString, String printType) {
         super(context);
         this.queryString = queryString;
         this.printType = printType;
     }
 
     @Nullable
-    @org.jetbrains.annotations.Nullable
+    //@org.jetbrains.annotations.Nullable
     @Override
     public List<BookInfo> loadInBackground() {
 
