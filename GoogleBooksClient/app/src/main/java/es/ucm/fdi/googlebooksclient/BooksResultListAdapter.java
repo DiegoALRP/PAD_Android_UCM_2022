@@ -16,7 +16,7 @@ import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultListAdapter.ViewHolder> implements View.OnClickListener {
+public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultListAdapter.BookViewHolder> implements View.OnClickListener {
 
     //private View wordItemView;
     private LayoutInflater mInflater;
@@ -36,14 +36,14 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
     @NonNull
     @NotNull
     @Override
-    public BooksResultListAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public BooksResultListAdapter.BookViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
 
         View mItemView = mInflater.inflate(R.layout.layout_for_recycler_view, parent, false);
-        return new ViewHolder(mItemView, this);
+        return new BookViewHolder(mItemView, this);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull BooksResultListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull BooksResultListAdapter.BookViewHolder holder, int position) {
 
         // Retrieve the data for that position
         String mCurrent = mBooksData.get(position).toString();
@@ -61,16 +61,16 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
 
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class BookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
         public TextView wordItemView;
         private BooksResultListAdapter mAdapter;
 
-        public ViewHolder(View itemView, BooksResultListAdapter adapter) {
+        public BookViewHolder(View itemView, BooksResultListAdapter adapter) {
             super(itemView);
             // Get the layout
-            //wordItemView = itemView.findViewById(R.id.word);
+            wordItemView = itemView.findViewById(R.id.word);
             // Associate with this adapter
             this.mAdapter = adapter;
             // Add click listener, if desired

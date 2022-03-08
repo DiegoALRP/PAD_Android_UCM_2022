@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         titleText = findViewById(R.id.booktitle_text);
         radioGroup = findViewById(R.id.radioGroup);
 
-        ArrayList<BookInfo> array = new ArrayList<BookInfo>();
+        /*ArrayList<BookInfo> array = new ArrayList<BookInfo>();
         try {
             array.add(new BookInfo("Don Quijote", "Cervantes", new URL("https://www.googleapis.com/books/v1/volumes?")));
             array.add(new BookInfo("Don Quijote", "Cervantes", new URL("https://www.googleapis.com/books/v1/volumes?")));
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             array.add(new BookInfo("Don Quijote", "Cervantes", new URL("https://www.googleapis.com/books/v1/volumes?")));
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        }
+        }*/
 
         booksResultListAdapter = new BooksResultListAdapter(this, array);
 
