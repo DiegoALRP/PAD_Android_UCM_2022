@@ -1,5 +1,7 @@
 package es.ucm.fdi.googlebooksclient;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
@@ -7,10 +9,14 @@ import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private BookLoaderCallBacks bookLoaderCallbacks;
     private EditText authorText;
     private EditText titleText;
+    private TextView txtv_result;
     private RadioGroup radioGroup;
 
     private BooksResultListAdapter booksResultListAdapter;
@@ -33,36 +40,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bookLoaderCallbacks = new BookLoaderCallBacks(this);
-
-        LoaderManager loaderManager = LoaderManager.getInstance(this);
-        if (loaderManager.getLoader(BOOK_LOADER_ID) != null) {
-            loaderManager.initLoader(BOOK_LOADER_ID,null, bookLoaderCallbacks);
-        }
-
         authorText = findViewById(R.id.bookauthors_text);
         titleText = findViewById(R.id.booktitle_text);
+        txtv_result = findViewById(R.id.txtv_result);
         radioGroup = findViewById(R.id.radioGroup);
 
-        /*ArrayList<BookInfo> array = new ArrayList<BookInfo>();
-        try {
-            array.add(new BookInfo("Don Quijote", "Cervantes", new URL("https://www.googleapis.com/books/v1/volumes?")));
-            array.add(new BookInfo("Don Quijote", "Cervantes", new URL("https://www.googleapis.com/books/v1/volumes?")));
-            array.add(new BookInfo("Don Quijote", "Cervantes", new URL("https://www.googleapis.com/books/v1/volumes?")));
-            array.add(new BookInfo("Don Quijote", "Cervantes", new URL("https://www.googleapis.com/books/v1/volumes?")));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }*/
-
-        booksResultListAdapter = new BooksResultListAdapter(this, array);
-
         recyclerView = findViewById(R.id.recyclerView_bookList);
-        booksResultListAdapter = new BooksResultListAdapter(this, array);
+
+        bookLoaderCallbacks = new BookLoaderCallBacks(this);
+
+        booksResultListAdapter = new BooksResultListAdapter(this, new ArrayList<BookInfo>());
         recyclerView.setAdapter(booksResultListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    void updateBooksResultList(List<BookInfo> bookInfos) {
+    public void updateBooksResultList(List<BookInfo> bookInfos) {
 
         booksResultListAdapter.setBooksData(bookInfos);
         booksResultListAdapter.notifyDataSetChanged();
@@ -74,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         String title = titleText.getText().toString();
 
         String queryString = author + " " + title;
+
+        txtv_result.setText("Loading...");
 
         int radioID = radioGroup.getCheckedRadioButtonId();
         String printType = "";
@@ -94,5 +88,42 @@ public class MainActivity extends AppCompatActivity {
         queryBundle.putString(BookLoaderCallBacks.EXTRA_QUERY, queryString);
         queryBundle.putString(BookLoaderCallBacks.EXTRA_PRINT_TYPE, printType);
         LoaderManager.getInstance(this).restartLoader(BOOK_LOADER_ID, queryBundle, bookLoaderCallbacks);
+
+
+
     }
+
+        public class BookLoaderCallBacks implements LoaderManager.LoaderCallbacks<List<BookInfo>> {
+
+            public static final String EXTRA_QUERY = "queryString";
+            public static final String EXTRA_PRINT_TYPE = "printType";
+            private Context context;
+
+            public BookLoaderCallBacks(Context context) {
+                this.context = context;
+            }
+
+            @NotNull
+            @Override
+            public BookLoader onCreateLoader(int id, @Nullable @org.jetbrains.annotations.Nullable Bundle args) {
+
+                BookLoader bookLoader = new BookLoader(context, args.getString(EXTRA_QUERY), args.getString(EXTRA_PRINT_TYPE));
+
+                return bookLoader;
+            }
+
+            @Override
+            public void onLoadFinished(@NonNull @NotNull Loader<List<BookInfo>> loader, List<BookInfo> data) {
+                if(data.size() == 0) txtv_result.setText("No Results Found");
+                else {
+                    updateBooksResultList(data);
+                    txtv_result.setText("Results");
+                }
+            }
+
+            @Override
+            public void onLoaderReset(@NonNull @NotNull Loader<List<BookInfo>> loader) {
+
+            }
+        }
 }

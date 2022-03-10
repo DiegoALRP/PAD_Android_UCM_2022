@@ -15,4 +15,13 @@ public class BookInfo {
         this.authors = authors;
         this.infoLink = infoLink;
     }
+
+    @Override
+    public String toString() {
+        return "BookInfo{" +
+                "title='" + title + '\'' +
+                ", authors='" + authors + '\'' +
+                ", infoLink=" + infoLink +
+                '}';
+    }
 }

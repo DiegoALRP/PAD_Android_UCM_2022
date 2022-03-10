@@ -33,6 +33,7 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
     private String printType;
     private final int MAX_RESULT = 40;
     private final int MAX_LENGTH = 999999;
+    private ArrayList<BookInfo> array;
 
     public BookLoader(@NonNull Context context, String queryString, String printType) {
         super(context);
@@ -44,8 +45,10 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
     //@org.jetbrains.annotations.Nullable
     @Override
     public List<BookInfo> loadInBackground() {
-
-        return getBookInfoJson(queryString, printType);
+        List<BookInfo> bookInfos;
+        bookInfos = getBookInfoJson(queryString, printType);
+        array = (ArrayList) bookInfos;
+        return bookInfos;
     }
 
     @Override
@@ -141,6 +144,7 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
         try {
 
             JSONObject jsonObject = new JSONObject(s);
+            if(jsonObject.getInt("totalItems") == 0) return list;
             JSONArray jsonArray = jsonObject.getJSONArray("items");
 
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -176,8 +180,14 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
 
         } catch (JSONException | MalformedURLException e) {
             e.printStackTrace();
+
         }
 
+
         return list;
+    }
+
+    public ArrayList<BookInfo> getArray() {
+        return array;
     }
 }
