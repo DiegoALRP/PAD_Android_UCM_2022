@@ -1,12 +1,15 @@
 package es.ucm.fdi.googlebooksclient;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
@@ -21,8 +24,10 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
     //private View wordItemView;
     private LayoutInflater mInflater;
     private ArrayList<BookInfo> mBooksData;
+    private Context context;
 
     public BooksResultListAdapter(Context context, List<BookInfo> bookList) {
+        this.context = context;
         mInflater = LayoutInflater.from(context);
         setBooksData(bookList);
     }
@@ -46,9 +51,13 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
     public void onBindViewHolder(@NonNull @NotNull BooksResultListAdapter.BookViewHolder holder, int position) {
 
         // Retrieve the data for that position
-        String mCurrent = mBooksData.get(position).toString();
+        String title = mBooksData.get(position).getTitle();
+        String author = mBooksData.get(position).getAuthors();
+        String url = mBooksData.get(position).getInfoLink().toString();
         // Add the data to the view
-        holder.wordItemView.setText(mCurrent);
+        holder.wordItemView1.setText(title);
+        holder.wordItemView2.setText(author);
+        holder.wordItemView3.setText(url);
     }
 
     @Override
@@ -64,17 +73,34 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
     class BookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
-        public TextView wordItemView;
+        public TextView wordItemView1;
+        public TextView wordItemView2;
+        public TextView wordItemView3;
         private BooksResultListAdapter mAdapter;
 
         public BookViewHolder(View itemView, BooksResultListAdapter adapter) {
             super(itemView);
             // Get the layout
-            wordItemView = itemView.findViewById(R.id.word);
+            wordItemView1 = itemView.findViewById(R.id.word1);
+            wordItemView2 = itemView.findViewById(R.id.word2);
+            wordItemView3 = itemView.findViewById(R.id.word3);
+
             // Associate with this adapter
             this.mAdapter = adapter;
             // Add click listener, if desired
-            itemView.setOnClickListener(this);
+            //itemView.setOnClickListener();
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String url = wordItemView3.getText().toString();
+                    if (url != null && !url.isEmpty()){
+                        Intent intentWeb = new Intent();
+                        intentWeb.setAction(Intent.ACTION_VIEW);
+                        intentWeb.setData(Uri.parse(url));
+                        context.startActivity(intentWeb);
+                    }
+                }
+            });
         }
 
         @Override

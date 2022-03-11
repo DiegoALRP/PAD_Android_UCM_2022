@@ -1,5 +1,7 @@
 package es.ucm.fdi.googlebooksclient;
 
+import android.util.Log;
+
 import java.net.URL;
 import java.util.List;
 
@@ -18,10 +20,26 @@ public class BookInfo {
 
     @Override
     public String toString() {
-        return "BookInfo{" +
-                "title='" + title + '\'' +
+        return "title='" + title + '\'' +
                 ", authors='" + authors + '\'' +
                 ", infoLink=" + infoLink +
                 '}';
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthors() {
+
+        if (authors.equals("No Authors")) return authors;
+        String aux1;
+        aux1 = authors.substring(1, authors.length() - 2);
+        aux1 = aux1.replace("\"", "").replace(",", ", ");
+        return aux1;
+    }
+
+    public URL getInfoLink() {
+        return infoLink;
     }
 }

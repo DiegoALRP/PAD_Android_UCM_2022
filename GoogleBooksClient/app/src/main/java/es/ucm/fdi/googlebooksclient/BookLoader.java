@@ -151,8 +151,10 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
 
                 JSONObject aux = new JSONObject(String.valueOf(jsonArray.getJSONObject(i)));
 
-                String stringURL = aux.getString("selfLink");
-                URL url = new URL(stringURL);
+                String stringURL = "";
+                URL url = null;
+                // = aux.getString("selfLink");
+                //URL url = new URL(stringURL);
 
                 JSONObject volumeInfo = aux.getJSONObject("volumeInfo");
                 String title;
@@ -169,6 +171,14 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
                 }
                 catch (JSONException e) {
                     authors = "No Authors";
+                }
+
+                try {
+                    stringURL = volumeInfo.getString("previewLink");
+                    url = new URL(stringURL);
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
                 BookInfo bookInfo = new BookInfo(title, authors, url);

@@ -115,10 +115,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLoadFinished(@NonNull @NotNull Loader<List<BookInfo>> loader, List<BookInfo> data) {
                 if(data.size() == 0) txtv_result.setText("No Results Found");
-                else {
-                    updateBooksResultList(data);
-                    txtv_result.setText("Results");
-                }
+                else txtv_result.setText("Results");
+
+                updateBooksResultList(data);
             }
 
             @Override
