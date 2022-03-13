@@ -12,9 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private BooksResultListAdapter booksResultListAdapter;
     private RecyclerView recyclerView;
 
+    private LottieAnimationView imageViewLoading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         radioGroup = findViewById(R.id.radioGroup);
 
         recyclerView = findViewById(R.id.recyclerView_bookList);
+
+        imageViewLoading = findViewById(R.id.imageViewLoading);
 
         bookLoaderCallbacks = new BookLoaderCallBacks(this);
 
@@ -68,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
         //String queryString = author + " " + title;
 
         txtv_result.setText("Loading...");
+        imageViewLoading.setVisibility(View.VISIBLE);
+        imageViewLoading.setAnimation(R.raw.loading_spinner);
+        imageViewLoading.playAnimation();
 
         int radioID = radioGroup.getCheckedRadioButtonId();
         String printType = "";
@@ -115,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
             public void onLoadFinished(@NonNull @NotNull Loader<List<BookInfo>> loader, List<BookInfo> data) {
                 if(data.size() == 0) txtv_result.setText("No Results Found");
                 else txtv_result.setText("Results");
+
+                imageViewLoading.setImageResource(R.drawable.loading);
+                imageViewLoading.setVisibility(View.INVISIBLE);
 
                 updateBooksResultList(data);
             }
