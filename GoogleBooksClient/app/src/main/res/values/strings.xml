@@ -7,4 +7,5 @@
     <string name="txtv1">Book search</string>
     <string name="txtv2">Book authors</string>
     <string name="txtv3">Book title</string>
+    <string name="txtvResults">Results</string>
 </resources>

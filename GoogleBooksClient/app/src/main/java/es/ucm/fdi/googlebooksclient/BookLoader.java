@@ -29,15 +29,17 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
 //public class BookLoader extends AsyncTaskLoader<String> {
 
 
-    private String queryString;
+    private String author;
+    private String title;
     private String printType;
     private final int MAX_RESULT = 40;
     private final int MAX_LENGTH = 999999;
     private ArrayList<BookInfo> array;
 
-    public BookLoader(@NonNull Context context, String queryString, String printType) {
+    public BookLoader(@NonNull Context context, String author, String title, String printType) {
         super(context);
-        this.queryString = queryString;
+        this.author = author;
+        this.title = title;
         this.printType = printType;
     }
 
@@ -46,7 +48,7 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
     @Override
     public List<BookInfo> loadInBackground() {
         List<BookInfo> bookInfos;
-        bookInfos = getBookInfoJson(queryString, printType);
+        bookInfos = getBookInfoJson(author, title, printType);
         array = (ArrayList) bookInfos;
         return bookInfos;
     }
@@ -57,8 +59,10 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
         forceLoad();
     }
 
-    public List<BookInfo> getBookInfoJson(String queryString, String printType) {
+    public List<BookInfo> getBookInfoJson(String author, String title, String printType) {
 
+        Log.w("Author", author);
+        Log.w("Title", title);
         // Base URL for the Books API.
         final String BOOK_BASE_URL =
                 "https://www.googleapis.com/books/v1/volumes?";
@@ -70,7 +74,25 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
         // Parameter to filter by print type
         final String PRINT_TYPE = "printType";
 
-        // Build up the query URI, limiting results to 5 printed books.
+        String queryString = "";
+        if (printType.equals("books") && !author.equals("") && !title.equals("")) {
+            queryString = "intitle:" + title + "+" + "inauthor:" + author;
+        }
+        else if (printType.equals("books") && !title.equals("")) {
+            queryString = "intitle:" + title;
+        }
+        else if (printType.equals("books") && !author.equals("")) {
+            queryString = "inauthor:" + author;
+        }
+        else if (printType.equals("magazines")) {
+            queryString = "intitle:" + title;
+        }
+        else {
+            queryString = author + " " + title;
+        }
+
+        //queryString = "intitle:Don Quijote+inauthor:Cervantes";
+
         Uri builtURI = Uri.parse(BOOK_BASE_URL).buildUpon()
                 .appendQueryParameter(QUERY_PARAM, queryString)
                 .appendQueryParameter(MAX_RESULTS, String.valueOf(MAX_RESULT))
@@ -116,10 +138,6 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
             }
         }
 
-        //Log.i("json", contentAsString);
-        //System.out.println(contentAsString);
-        //Log.i("json", "hi");
-
         return fromJsonResponse(contentAsString);
     }
 
@@ -153,8 +171,6 @@ public class BookLoader extends AsyncTaskLoader<List<BookInfo>> {
 
                 String stringURL = "";
                 URL url = null;
-                // = aux.getString("selfLink");
-                //URL url = new URL(stringURL);
 
                 JSONObject volumeInfo = aux.getJSONObject("volumeInfo");
                 String title;

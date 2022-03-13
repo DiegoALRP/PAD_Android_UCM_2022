@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         String author = authorText.getText().toString();
         String title = titleText.getText().toString();
 
-        String queryString = author + " " + title;
+        //String queryString = author + " " + title;
 
         txtv_result.setText("Loading...");
 
@@ -85,17 +85,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Bundle queryBundle = new Bundle();
-        queryBundle.putString(BookLoaderCallBacks.EXTRA_QUERY, queryString);
+        queryBundle.putString(BookLoaderCallBacks.EXTRA_AUTHOR, author);
+        queryBundle.putString(BookLoaderCallBacks.EXTRA_TITLE, title);
         queryBundle.putString(BookLoaderCallBacks.EXTRA_PRINT_TYPE, printType);
         LoaderManager.getInstance(this).restartLoader(BOOK_LOADER_ID, queryBundle, bookLoaderCallbacks);
-
-
-
     }
 
         public class BookLoaderCallBacks implements LoaderManager.LoaderCallbacks<List<BookInfo>> {
 
-            public static final String EXTRA_QUERY = "queryString";
+            public static final String EXTRA_AUTHOR = "queryStringAuthor";
+            public static final String EXTRA_TITLE = "queryStringTitle";
             public static final String EXTRA_PRINT_TYPE = "printType";
             private Context context;
 
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public BookLoader onCreateLoader(int id, @Nullable @org.jetbrains.annotations.Nullable Bundle args) {
 
-                BookLoader bookLoader = new BookLoader(context, args.getString(EXTRA_QUERY), args.getString(EXTRA_PRINT_TYPE));
+                BookLoader bookLoader = new BookLoader(context, args.getString(EXTRA_AUTHOR), args.getString(EXTRA_TITLE), args.getString(EXTRA_PRINT_TYPE));
 
                 return bookLoader;
             }
