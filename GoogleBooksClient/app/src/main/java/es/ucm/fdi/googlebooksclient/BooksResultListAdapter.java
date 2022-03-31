@@ -72,7 +72,6 @@ public class BooksResultListAdapter extends RecyclerView.Adapter<BooksResultList
 
     class BookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-
         public TextView wordItemView1;
         public TextView wordItemView2;
         public TextView wordItemView3;
