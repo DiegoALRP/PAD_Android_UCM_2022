@@ -1,8 +1,10 @@
-import React from 'react';
+/*import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+//import './index.css';
+import App from './App.jsx';
 import reportWebVitals from './reportWebVitals';
+
+ReactDOM.render(<App />, document.getElementById('root'));
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,3 +17,11 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+//TODO creo que aqui hay que registrar el service worker*/
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App.jsx';
+
+ReactDOM.render(<App />, document.getElementById('root'));
